@@ -5,23 +5,31 @@
 <script src="https://sdk.altvr.com/libs/altspace.js/0.28.1/altspace.min.js"></script>
 
 <!-- set up the scene -->
-<a-scene altspace="vertical-align: floor; fullspace: true" sync-system="author: Rella; app: Floyd">
+<a-scene altspace="vertical-align: floor; fullspace: true" sync-system="author: FACEMAN; app: Test">
 
    <!-- preload all our textures -->
     <a-assets>
-        <img id='moon' src='assets/moon.jpg'/>
-        <img id='stars' src='assets/stars.png'/>
+        <img id='sphere' src='assets/bluub.jpg'/>
+        <img id='sky' src='assets/marsish.png'/>
     </a-assets>
 
-   <!-- add the moon to the scene -->
-    <a-sphere position='0 4 0' radius='2' material='src: #moon;' opacity='1' n-sphere-collider="type: environment; convex: true">
+   <!-- add the sphere to the scene -->
+    <a-sphere position='0 5 10' radius='2' material='src: #sphere;' opacity='1' n-sphere-collider="type: environment; convex: true">
         <!-- add an animation to make it rotate -->
-        <a-animation to='0 -360 0' easing='linear' dur='20000' repeat='indefinite'/>
+        <a-animation to='100 -100 150' easing='linear' dur='20000' repeat='indefinite'/>
+    </a-sphere>
+    <a-sphere position='10 0 0' radius='3' material='src: #sphere;' opacity='1' n-sphere-collider="type: environment; convex: true">
+        <!-- add an animation to make it rotate -->
+        <a-animation to='150 -100 -150' easing='linear' dur='20000' repeat='indefinite'/>
+    </a-sphere>
+    <a-sphere position='0 0 -10' radius='5' material='src: #sphere;' opacity='1' n-sphere-collider="type: environment; convex: true">
+        <!-- add an animation to make it rotate -->
+        <a-animation to='0 -100 150' easing='linear' dur='20000' repeat='indefinite'/>
     </a-sphere>
 
-    <!-- add the backdrop of stars -->
+    <!-- add the sky -->
 
-   <a-sky src='#stars' radius='100'>
+   <a-sky src='#sky' radius='100'>
         <a-animation id="skyanim1" to='50 50 50' easing='linear' dur='100000' repeat='indefinite'/>
     </a-sky>
 
