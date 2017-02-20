@@ -1,40 +1,28 @@
 <!DOCTYPE html>
 <html><body>
 <script src="https://aframe.io/releases/0.3.0/aframe.min.js"></script>
+<script src='https://cdnjs.cloudflare.com/ajax/libs/three.js/r74/three.js'></script>
 <script src="https://cdn.rawgit.com/AltspaceVR/aframe-altspace-component/v1.3.1/dist/aframe-altspace-component.min.js"></script>
 <script src="https://sdk.altvr.com/libs/altspace.js/0.28.1/altspace.min.js"></script>
+<script src='three-glTFLoader.js'></script>
+
 
 <!-- set up the scene -->
-<a-scene altspace="vertical-align: floor; fullspace: true" sync-system="author: FACEMAN; app: Test">
+<a-scene altspace="vertical-align: floor; fullspace: true" sync-system="author: FACEMAN; app: Crystals">
 
    <!-- preload all our textures -->
     <a-assets>
-        <img id='sphere' src='assets/bluub.jpg'/>
-        <img id='sky' src='assets/marsish.png'/>
-		<a-assets-item id="crystals" src="assets/crystals.dae"/>
+		<a-assets-item id="crystals" src="assets/crystals.gltf"/>
     </a-assets>
-		<a-collada-model src="#crystals" position="0 0 -10">
-   <!-- 
-    <a-sphere position='0 5 10' radius='2' material='src: #sphere;' opacity='1' n-sphere-collider="type: environment; convex: true">
-		<a-animation to='100 -100 150' easing='linear' dur='20000' repeat='indefinite'/>
-    </a-sphere>
-    <a-sphere position='10 0 0' radius='3' material='src: #sphere;' opacity='1' n-sphere-collider="type: environment; convex: true">
-        <a-animation to='150 -100 -150' easing='linear' dur='20000' repeat='indefinite'/>
-    </a-sphere>
-    <a-sphere position='0 0 -10' radius='5' material='src: #sphere;' opacity='1' n-sphere-collider="type: environment; convex: true">
-        <a-animation to='0 -100 150' easing='linear' dur='20000' repeat='indefinite'/>
-    </a-sphere>
-	-->
-    <!-- add the sky -->
+	<a-entity gltf-model="url(assets/crystals.gltf)" position="0 0 -10"><a-entity>
 
-   <a-sky src='#sky' radius='100'>
+	<a-sky src='#sky' radius='100'>
         <a-animation id="skyanim1" to='50 50 50' easing='linear' dur='100000' repeat='indefinite'/>
     </a-sky>
 
-     <!-- add a view camera (2d only) -->
-      <a-entity position='0 0 2'>
-        <a-camera></a-camera>
-      </a-entity>
+   <a-entity position='0 0 2'>
+	<a-camera></a-camera>
+	</a-entity>
 
 </a-scene>
 
