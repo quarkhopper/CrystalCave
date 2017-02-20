@@ -8,10 +8,6 @@
         <script>
         var scene = new THREE.Scene();
 
-        if(altspace && altspace.inClient){
-            var renderer = altspace.getThreeJSRenderer();
-        }
-        else {
             var renderer = new THREE.WebGLRenderer();
             renderer.setSize(1024, 1024);
             renderer.setClearColor( 0x808080 );
@@ -19,10 +15,9 @@
 
             var camera = new THREE.OrthographicCamera(-1.5, 1.5, 1.5, -1.5, 0.1, 100);
             camera.up.set(0,0,1);
-            camera.position.set(4, 0, 1.5);
+            camera.position.set(4, 0, 100);
             camera.lookAt(new THREE.Vector3(0, 0, 1.5));
             scene.add(camera);
-        }
 
         var loader = new THREE.glTFLoader();
         loader.load('assets/crystals.gltf', function(result)

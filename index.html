@@ -5,42 +5,46 @@
 		<script src="https://cdn.rawgit.com/AltspaceVR/aframe-altspace-component/v1.3.1/dist/aframe-altspace-component.min.js"></script>
 		<script src="https://sdk.altvr.com/libs/altspace.js/0.28.1/altspace.min.js"></script>
 		<script src="https://cdn.rawgit.com/mrdoob/three.js/r74/build/three.min.js"></script>
-		<script src="lib/three-glTFLoader.min.js"></script>
+<!--		<script src="lib/three-glTFLoader.min.js"></script> -->
+		<script src="https://cdn.rawgit.com/norybiak/UltimateLoader/v0.3.0/dist/UltimateLoader.min.js"></script>
 	</head>
 	<body>
-		<script>
-		
-		var sim = altspace.utilities.Simulation();
-		sim.camera.position.z = 5;
-		var config = { authorId: 'FACEMAN', appId: 'Crystals' };
-		var sceneSync;
-		altspace.utilities.sync.connect(config).then(function(connection) {
-			sceneSync = altspace.utilities.behaviors.SceneSync(connection.instance, {
-				instantiators: {
-					'Crystals': createCrystals,
-				},
-				ready: ready
-			});
-			sim.scene.addBehavior(sceneSync);
-		});
-		
-		function createCrystals() {
-			
-			var loader = new THREE.glTFLoader();
-			var crystals;
-			loader.load('assets/crystals.gltf', function(result)
-			{
-				crystals = result.scene.children[0].children[0];
-			});
-			sim.scene.add(crystals);
-			return crystals;
+
+	<a-scene altspace='vertical-align: bottom;'>
+ 
+    <a-assets>
+        <img id='sky' src='assets/marsish.png'/>
+    </a-assets>
+	
+    <a-sky src='#sky' radius='100'></a-sky>
+	 <a-entity position='0 0 2'>
+        <a-camera></a-camera>
+    </a-entity>
+	</a-scene>
+   <script>
+    var objectUrls =
+    [
+        'assets/crystals.gltf',
+    ];
+
+    var loadedObjects = []; 
+	var scene = document.querySelector('a-scene').object3D;
+
+    UltimateLoader.multiload(objectUrls, function(objects)
+    {
+		for (var i = 0; i < objects.length; i++)
+		{
+		  objects[i].position.set(0,0,0);
+		  objects[i].scale.set(1,1,1);
+
+		  scene.add(objects[i]);
+
+		  loadedObjects[i] = objects[i];
 		}
-		
-		function ready(firstInstance) {
-			if (firstInstance) {
-				sceneSync.instantiate('Crystals');
-			}
-		}
-		</script>
+	});
+  
+    </script>
+	
+
 	</body>
 </html>
