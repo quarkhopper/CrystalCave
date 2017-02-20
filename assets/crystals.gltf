@@ -3,7 +3,7 @@
         "accessor_buffer_Icosphere.016_0": {
             "bufferView": "bufferView_buffer_Icosphere.016_0",
             "byteOffset": 0,
-            "byteStride": 36,
+            "byteStride": 12,
             "componentType": 5126,
             "count": 6535,
             "max": [
@@ -20,8 +20,8 @@
         },
         "accessor_buffer_Icosphere.016_1": {
             "bufferView": "bufferView_buffer_Icosphere.016_0",
-            "byteOffset": 12,
-            "byteStride": 36,
+            "byteOffset": 78420,
+            "byteStride": 12,
             "componentType": 5126,
             "count": 6535,
             "max": [
@@ -38,8 +38,8 @@
         },
         "accessor_buffer_Icosphere.016_2": {
             "bufferView": "bufferView_buffer_Icosphere.016_0",
-            "byteOffset": 24,
-            "byteStride": 36,
+            "byteOffset": 156840,
+            "byteStride": 12,
             "componentType": 5126,
             "count": 6535,
             "max": [
@@ -78,23 +78,23 @@
     },
     "bufferViews": {
         "bufferView_buffer_Icosphere.016_0": {
-            "buffer": "buffer_combined",
+            "buffer": "buffer_Icosphere.016",
             "byteLength": 235260,
             "byteOffset": 0,
             "target": 34962
         },
         "bufferView_buffer_Icosphere.016_1": {
-            "buffer": "buffer_combined",
+            "buffer": "buffer_Icosphere.016",
             "byteLength": 20646,
             "byteOffset": 235260,
             "target": 34963
         }
     },
     "buffers": {
-        "buffer_combined": {
+        "buffer_Icosphere.016": {
             "byteLength": 255906,
             "type": "arraybuffer",
-            "uri": "buffer_combined.bin"
+            "uri": "buffer_Icosphere_016.bin"
         }
     },
     "extensions": {
@@ -109,7 +109,7 @@
         "material_Material.004": {
             "extensions": {
                 "KHR_materials_common": {
-                    "technique": "PHONG",
+                    "technique": "CONSTANT",
                     "values": {
                         "ambient": [
                             1.0,
@@ -125,9 +125,9 @@
                         ],
                         "doubleSided": false,
                         "emission": [
-                            0.0,
-                            0.0,
-                            0.0,
+                            0.007075452711433172,
+                            0.022423822432756424,
+                            0.0819750651717186,
                             1.0
                         ],
                         "shininess": 50,
