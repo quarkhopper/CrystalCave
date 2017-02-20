@@ -3,14 +3,14 @@
 	<head>
 		<script src="https://aframe.io/releases/0.3.0/aframe.min.js"></script>
 		<script src="https://cdn.rawgit.com/AltspaceVR/aframe-altspace-component/v1.3.1/dist/aframe-altspace-component.min.js"></script>
-<!--		<script src="https://sdk.altvr.com/libs/altspace.js/0.28.1/altspace.min.js"></script> -->
+		<script src="https://sdk.altvr.com/libs/altspace.js/0.28.1/altspace.min.js"></script> 
 <!--		<script src="https://cdn.rawgit.com/mrdoob/three.js/r74/build/three.min.js"></script> -->
 <!--		<script src="lib/three-glTFLoader.min.js"></script> -->
 		<script src="https://cdn.rawgit.com/norybiak/UltimateLoader/v0.3.0/dist/UltimateLoader.min.js"></script>
 	</head>
 	<body>
 
-	<a-scene altspace='vertical-align: bottom;'>
+	<a-scene altspace sync-system="author: quarkhopper; app: crystals">
  
     <a-assets>
         <img id='sky' src='assets/marsish.png'/>
@@ -20,12 +20,12 @@
 	 <a-entity position='0 0 2'>
         <a-camera></a-camera>
     </a-entity>
-	</a-scene>
+	</a-scene>	
 	
    <script>
     var objectUrls =
     [
-        'assets/crystals.gltf',
+        'assets/crystals.obj',
     ];
 
     var loadedObjects = []; 
@@ -43,9 +43,9 @@
 		  loadedObjects[i] = objects[i];
 		}
 	});
-  
+ 
     </script>
-	
+
 
 	</body>
 </html>
