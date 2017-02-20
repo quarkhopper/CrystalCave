@@ -1,25 +1,19 @@
 <!DOCTYPE html>
-<html><body>
-<script src="https://aframe.io/releases/0.3.0/aframe.min.js"></script>
-<script src="https://cdn.rawgit.com/AltspaceVR/aframe-altspace-component/v1.3.1/dist/aframe-altspace-component.min.js"></script>
-<script src="https://sdk.altvr.com/libs/altspace.js/0.28.1/altspace.min.js"></script>
-<!-- <script src='three-glTFLoader.js'></script>
-<script src='https://cdnjs.cloudflare.com/ajax/libs/three.js/r74/three.js'></script> -->
-
-<a-scene altspace="vertical-align: floor; fullspace: true" sync-system="author: FACEMAN; app: Crystals">
-    <a-assets>
-		<img id='sky' src='assets/marsish.png'/>
-		<a-asset-item id="crystals" src="assets/crystals.gltf"></a-asset-item>
-    </a-assets>
-	<a-entity gltf-model="#crystals"><a-entity>
-
-	<a-sky src='#sky' radius='100'>
-        <a-animation id="skyanim1" to='50 50 50' easing='linear' dur='100000' repeat='indefinite'/>
-    </a-sky>
-
-   <a-entity position='0 0 2'>
-	<a-camera></a-camera>
-	</a-entity>
-</a-scene>
-
-</body></html>
+<html>
+	<head>
+		<title>Crystals</title>
+		<script src="https://aframe.io/releases/0.3.0/aframe.min.js"></script>
+		<script src="https://cdn.rawgit.com/AltspaceVR/aframe-altspace-component/v1.3.1/dist/aframe-altspace-component.min.js"></script>
+	</head>
+	<body>
+	    <a-scene altspace='vertical-align: bottom;'>
+			  <a-assets>
+				<a-asset-item id="crystals" src="assets/crystals.gltf"></a-asset-item>
+			  </a-assets>
+			<a-entity gltf-model="#crystals"></a-entity>
+			<a-entity position="0 0 10">
+				<a-camera></a-camera>
+			</a-entity>
+		</a-scene>
+	</body>
+</html>

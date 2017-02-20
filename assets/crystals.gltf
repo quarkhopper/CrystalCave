@@ -103,7 +103,8 @@
         }
     },
     "extensionsUsed": [
-        "KHR_materials_common"
+        "KHR_materials_common",
+        "BLENDER_physics"
     ],
     "materials": {
         "material_Material.004": {
