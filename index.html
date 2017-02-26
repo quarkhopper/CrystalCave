@@ -17,10 +17,10 @@ function init() {
 	scene = new THREE.Scene();
 	root = new THREE.Object3D();
 	root.position.addScaledVector(new THREE.Vector3(spawnPoint.x, 0, spawnPoint.z), -1);
-
-	renderer = altspace.getThreeJSRenderer();
-
 	scene.add(root);
+
+	//renderer = altspace.getThreeJSRenderer();
+
     
 	if(altspace && altspace.inClient) {
 		renderer = altspace.getThreeJSRenderer({initialSerializationBufferSize: 640000});
@@ -36,10 +36,7 @@ function init() {
 }
 
 function loadAssets() {
-    UltimateLoader.load()
-    
-	// var loader = new THREE.OBJMTLLoader();
-
+   
     // perimeter collision wall - prevents teleporting into cracks and escaping
 	UltimateLoader.load('models/collisionwall.obj', function (object) {
 		mesh = object;
@@ -57,7 +54,7 @@ function loadAssets() {
 	});
 
 	// CRYSTALS
-	Ultimateloader.load('models/crystals.obj', function (object) {
+	UltimateLoader.load('models/crystals.obj', function (object) {
 		mesh = object;
 		mesh.scale.set(5.5, 5.5, 5.5);
 		mesh.position.set(0, 4, 60);
@@ -72,7 +69,7 @@ function loadAssets() {
 	material = new THREE.MeshLambertMaterial({
 	    map: THREE.ImageUtils.loadTexture('models/WaterSurface.png'),
 	    transparent: true,
-	    opacity: .8,
+	    opacity: 0.8,
 	    side: THREE.DoubleSide
 	});
 	water = new THREE.Mesh(geometry, material);
