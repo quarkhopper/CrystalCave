@@ -19,6 +19,12 @@ function init() {
 	root.position.addScaledVector(new THREE.Vector3(spawnPoint.x, 0, spawnPoint.z), -1);
 	scene.add(root);
 
+<<<<<<< HEAD
+=======
+	//renderer = altspace.getThreeJSRenderer();
+
+    
+>>>>>>> origin/master
 	if(altspace && altspace.inClient) {
 		renderer = altspace.getThreeJSRenderer({initialSerializationBufferSize: 640000});
 		altspace.getEnclosure().then(function(enc) {
@@ -52,7 +58,11 @@ function loadAssets() {
 	});
 
 	// CRYSTALS
+<<<<<<< HEAD
 	UltimateLoader.load('models/crystals.gltf', function (object) {
+=======
+	UltimateLoader.load('models/crystals.obj', function (object) {
+>>>>>>> origin/master
 		mesh = object;
 		mesh.scale.set(5.5, 5.5, 5.5);
 		mesh.position.set(0, 4, 60);
