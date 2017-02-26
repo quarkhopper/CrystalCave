@@ -1,51 +1,169 @@
 <!DOCTYPE html>
 <html>
-	<head>
-		<script src="https://aframe.io/releases/0.3.0/aframe.min.js"></script>
-		<script src="https://cdn.rawgit.com/AltspaceVR/aframe-altspace-component/v1.3.1/dist/aframe-altspace-component.min.js"></script>
-		<script src="https://sdk.altvr.com/libs/altspace.js/0.28.1/altspace.min.js"></script> 
-<!--		<script src="https://cdn.rawgit.com/mrdoob/three.js/r74/build/three.min.js"></script> -->
-<!--		<script src="lib/three-glTFLoader.min.js"></script> -->
-		<script src="https://cdn.rawgit.com/norybiak/UltimateLoader/v0.3.0/dist/UltimateLoader.min.js"></script>
-	</head>
-	<body>
+<head>
+<title>Crystal Cave</title>
+<script src="https://aframe.io/releases/0.3.0/aframe.min.js"></script>
+<script src="https://cdn.rawgit.com/AltspaceVR/aframe-altspace-component/v1.3.1/dist/aframe-altspace-component.min.js"></script>
+<script src="http://sdk.altvr.com/libs/three.js/r73/build/three.js"></script>
+<script src="http://sdk.altvr.com/libs/altspace.js/0.27.0/altspace.min.js"></script>
+<script src="http://sdk.altvr.com/libs/three.js/r73/examples/js/loaders/OBJMTLLoader.js"></script>
+<script src="http://sdk.altvr.com/libs/three.js/r73/examples/js/loaders/MTLLoader.js"></script>
+<script src="http://cdn.rawgit.com/oOblik/AltspaceVR-Native-Components-JS/0.1.2/js/JSNativeComponents.js"></script>
+<script>
+var scene;
+var root;
+var renderer;
+var spawnPoint = new THREE.Vector3(22.0247, 23.38715, 84.82096);
 
-	<a-scene altspace sync-system="author: quarkhopper; app: crystals">
- 
-    <a-assets>
-        <img id='sky' src='assets/marsish.png'/>
-    </a-assets>
-	
-    <a-sky src='#sky' radius='100'></a-sky>
-	 <a-entity position='0 0 2'>
-        <a-camera></a-camera>
-    </a-entity>
-	</a-scene>	
-	
-   <script>
-    var objectUrls =
-    [
-        'assets/crystals.obj',
-    ];
+function init() {
+	// Setup ThreeJS Scene for AltspaceVR
+	scene = new THREE.Scene();
+	root = new THREE.Object3D();
+	root.position.addScaledVector(new THREE.Vector3(spawnPoint.x, 0, spawnPoint.z), -1);
 
-    var loadedObjects = []; 
-	var scene = document.querySelector('a-scene').object3D;
+	renderer = altspace.getThreeJSRenderer();
 
-    UltimateLoader.multiload(objectUrls, function(objects)
-    {
-		for (var i = 0; i < objects.length; i++)
-		{
-		  objects[i].position.set(0,0,0);
-		  objects[i].scale.set(1,1,1);
+	scene.add(root);
+    
+	if(altspace && altspace.inClient) {
+		renderer = altspace.getThreeJSRenderer({initialSerializationBufferSize: 640000});
+		altspace.getEnclosure().then(function(enc) {
+			console.log('Enclosure Data:', enc);
+			root.scale.multiplyScalar(enc.pixelsPerMeter);
+			enc.requestFullspace().then(function () {
+			    buildSpawnPoint();
+			    loadAssets();
+			});
+		});
+	}
+}
 
-		  scene.add(objects[i]);
+function loadAssets() {
+	var loader = new THREE.OBJMTLLoader();
 
-		  loadedObjects[i] = objects[i];
-		}
+    // perimeter collision wall - prevents teleporting into cracks and escaping
+	loader.load('models/collisionwall.obj', 'models/collisionwall.mtl', function (object) {
+		mesh = object;
+		mesh.scale.set(6, 6, 6);
+		mesh.position.set(0, 0, 0);
+		new NativeComponent('n-mesh-collider', { convex: false }, mesh).addTo(root);
 	});
- 
-    </script>
+
+	// WALLS
+	loader.load('models/cave.obj', 'models/cave.mtl', function (object) {
+	    mesh = object;
+		mesh.scale.set(6, 6, 6);
+		mesh.position.set(0, 0, 0);
+		new NativeComponent('n-mesh-collider', { convex: false }, mesh).addTo(root);
+	});
+
+	// CRYSTALS
+	loader.load('models/crystals.obj', 'models/crystals.mtl', function (object) {
+		mesh = object;
+		mesh.scale.set(5.5, 5.5, 5.5);
+		mesh.position.set(0, 4, 60);
+		mesh.rotation.set(-15 * (Math.PI / 180), 90 * (Math.PI / 180), 0);
+		new NativeComponent('n-mesh-collider', { convex: false }, mesh).addTo(root);
+	});
+
+	// WATER
+	geometry = new THREE.PlaneGeometry(16, 30, 0);
+	geometry.rotateX(-90 * (Math.PI / 180));
+	//base = new THREE.MeshBasicMaterial( { color: 0x5555ff, transparent: true, side: THREE.DoubleSide} )
+	material = new THREE.MeshLambertMaterial({
+	    map: THREE.ImageUtils.loadTexture('models/WaterSurface.png'),
+	    transparent: true,
+	    opacity: .8,
+	    side: THREE.DoubleSide
+	});
+	water = new THREE.Mesh(geometry, material);
+	water.position.set(20.5, 8.0, -27.0);
+    // Water sounds
+    // Author: FractalStudios
+    // Title: Water Trickle
+    // https://www.freesound.org/people/FractalStudios/sounds/363120/
+	var config = {
+	    loop: true,
+	    autoplay: true,
+	    spatialBlend: 1,
+	    volume: 0.5,
+	    minDistance: 5,
+        maxDistance: 15,
+	    src: 'sounds/Water.ogg'
+	}
+	new NativeComponent("n-sound", config, water).addTo(root);
+
+    // LAVA
+	geometry = new THREE.PlaneGeometry(23.1, 46.26, 0);
+	geometry.rotateX(-90 * (Math.PI / 180));
+	//base = new THREE.MeshBasicMaterial({ color: 0x5555ff, transparent: true, side: THREE.DoubleSide })
+	material = new THREE.MeshLambertMaterial({
+	    map: THREE.ImageUtils.loadTexture('models/LavaSurface.png'),
+	    transparent: true,
+	    opacity: .8,
+	    side: THREE.DoubleSide
+	});
+	lava = new THREE.Mesh(geometry, material);
+	lava.position.set(-26.7, 3.12, -14.28);
+	root.add(lava);
+
+    // Lava sounds
+    // Author: Audionautics
+    // Title: Lava loop
+    // https://www.freesound.org/people/Audionautics/sounds/133901/
+	geometry = new THREE.BoxGeometry(1, 1, 1)
+	material = new THREE.MeshBasicMaterial({ color: 0x00ff00 });
+	material.visible = false;
+	soundBox = new THREE.Mesh(geometry, material);
+	soundBox.position.set(-25.7, 3.12, -8.28);
+	var config = {
+	    loop: true,
+	    autoplay: true,
+	    spatialBlend: 1,
+	    volume: 10,
+        minDistance: 10,
+	    src: 'sounds/Lava.ogg'
+	}
+	new NativeComponent("n-sound", config, soundBox).addTo(root);
+
+    // AMBIENT EFFECTS
+    // Ambient cave music
+    // Author: Jakub Michalski
+    // Title: Abstract Cave Ambient
+    // https://soundcloud.com/jakub-michalski-2/abstract-cave-ambient
+	var ambientConfig = {
+	    loop: true,
+	    autoplay: true,
+	    spatialBlend: 0,
+	    volume: 0.5,
+	    src: 'sounds/Ambient.ogg'
+	}
+    new NativeComponent("n-sound", ambientConfig).addTo(root);
+
+	animate();
+}
+
+function buildSpawnPoint() {
+    // SPAWN ELEVATOR
+    for (i = 0; i < spawnPoint.y - 1; i++) {
+        geometry = new THREE.PlaneGeometry(1, 1, 0);
+        geometry.rotateX(-90 * (Math.PI / 180));
+        material = new THREE.MeshBasicMaterial({ visible: false });
+        rung = new THREE.Mesh(geometry, material);
+        rung.position.set(0, i, 0);
+        new NativeComponent("n-mesh-collider", { convex: true }, rung).addTo(scene);
+    }
+}
 
 
-	</body>
-</html>
+// Start AltspaceVR Render
+function animate() {
+	requestAnimationFrame(animate);
+	renderer.render(scene);
+}
+
+</script>
+</head>
+<body onload='init()'>
+</body>
+</html> 
