@@ -2,12 +2,9 @@
 <html>
 <head>
 <title>Crystal Cave</title>
-<script src="https://aframe.io/releases/0.3.0/aframe.min.js"></script>
-<script src="https://cdn.rawgit.com/AltspaceVR/aframe-altspace-component/v1.3.1/dist/aframe-altspace-component.min.js"></script>
 <script src="http://sdk.altvr.com/libs/three.js/r73/build/three.js"></script>
-<script src="http://sdk.altvr.com/libs/altspace.js/0.27.0/altspace.min.js"></script>
-<script src="http://sdk.altvr.com/libs/three.js/r73/examples/js/loaders/OBJMTLLoader.js"></script>
-<script src="http://sdk.altvr.com/libs/three.js/r73/examples/js/loaders/MTLLoader.js"></script>
+<script src="http://sdk.altvr.com/libs/altspace.js/1.0.0/altspace.min.js"></script>
+<script src="https://cdn.rawgit.com/norybiak/UltimateLoader/v0.3.1/dist/UltimateLoader.min.js"></script>
 <script src="http://cdn.rawgit.com/oOblik/AltspaceVR-Native-Components-JS/0.1.2/js/JSNativeComponents.js"></script>
 <script>
 var scene;
@@ -39,10 +36,12 @@ function init() {
 }
 
 function loadAssets() {
-	var loader = new THREE.OBJMTLLoader();
+    UltimateLoader.load()
+    
+	// var loader = new THREE.OBJMTLLoader();
 
     // perimeter collision wall - prevents teleporting into cracks and escaping
-	loader.load('models/collisionwall.obj', 'models/collisionwall.mtl', function (object) {
+	UltimateLoader.load('models/collisionwall.obj', function (object) {
 		mesh = object;
 		mesh.scale.set(6, 6, 6);
 		mesh.position.set(0, 0, 0);
@@ -50,7 +49,7 @@ function loadAssets() {
 	});
 
 	// WALLS
-	loader.load('models/cave.obj', 'models/cave.mtl', function (object) {
+	UltimateLoader.load('models/cave.obj', function (object) {
 	    mesh = object;
 		mesh.scale.set(6, 6, 6);
 		mesh.position.set(0, 0, 0);
@@ -58,7 +57,7 @@ function loadAssets() {
 	});
 
 	// CRYSTALS
-	loader.load('models/crystals.obj', 'models/crystals.mtl', function (object) {
+	Ultimateloader.load('models/crystals.obj', function (object) {
 		mesh = object;
 		mesh.scale.set(5.5, 5.5, 5.5);
 		mesh.position.set(0, 4, 60);
@@ -145,7 +144,7 @@ function loadAssets() {
 
 function buildSpawnPoint() {
     // SPAWN ELEVATOR
-    for (i = 0; i < spawnPoint.y - 1; i++) {
+    for (i = 0; i < spawnPoint.y - 0.8; i++) {
         geometry = new THREE.PlaneGeometry(1, 1, 0);
         geometry.rotateX(-90 * (Math.PI / 180));
         material = new THREE.MeshBasicMaterial({ visible: false });
