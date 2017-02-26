@@ -2,7 +2,7 @@
 <html>
 <head>
 <title>Crystal Cave</title>
-<script src="http://sdk.altvr.com/libs/three.js/r73/build/three.js"></script>
+<script src="https://cdn.rawgit.com/mrdoob/three.js/r74/build/three.min.js"></script>
 <script src="http://sdk.altvr.com/libs/altspace.js/1.0.0/altspace.min.js"></script>
 <script src="http://cdn.rawgit.com/norybiak/UltimateLoader/v0.3.1/dist/UltimateLoader.min.js"></script>
 <script src="http://cdn.rawgit.com/oOblik/AltspaceVR-Native-Components-JS/0.1.2/js/JSNativeComponents.js"></script>
@@ -17,11 +17,8 @@ function init() {
 	scene = new THREE.Scene();
 	root = new THREE.Object3D();
 	root.position.addScaledVector(new THREE.Vector3(spawnPoint.x, 0, spawnPoint.z), -1);
-
-	renderer = altspace.getThreeJSRenderer();
-
 	scene.add(root);
-    
+
 	if(altspace && altspace.inClient) {
 		renderer = altspace.getThreeJSRenderer({initialSerializationBufferSize: 640000});
 		altspace.getEnclosure().then(function(enc) {
@@ -36,12 +33,9 @@ function init() {
 }
 
 function loadAssets() {
-    UltimateLoader.load()
-    
-	// var loader = new THREE.OBJMTLLoader();
-
+   
     // perimeter collision wall - prevents teleporting into cracks and escaping
-	UltimateLoader.load('models/collisionwall.obj', function (object) {
+	UltimateLoader.load('models/collisionwall.gltf', function (object) {
 		mesh = object;
 		mesh.scale.set(6, 6, 6);
 		mesh.position.set(0, 0, 0);
@@ -49,15 +43,16 @@ function loadAssets() {
 	});
 
 	// WALLS
-	UltimateLoader.load('models/cave.obj', function (object) {
+	UltimateLoader.load('models/cave.gltf', function (object) {
 	    mesh = object;
 		mesh.scale.set(6, 6, 6);
 		mesh.position.set(0, 0, 0);
+		console.log(mesh);
 		new NativeComponent('n-mesh-collider', { convex: false }, mesh).addTo(root);
 	});
 
 	// CRYSTALS
-	Ultimateloader.load('models/crystals.obj', function (object) {
+	UltimateLoader.load('models/crystals.gltf', function (object) {
 		mesh = object;
 		mesh.scale.set(5.5, 5.5, 5.5);
 		mesh.position.set(0, 4, 60);
@@ -72,7 +67,7 @@ function loadAssets() {
 	material = new THREE.MeshLambertMaterial({
 	    map: THREE.ImageUtils.loadTexture('models/WaterSurface.png'),
 	    transparent: true,
-	    opacity: .8,
+	    opacity: 0.8,
 	    side: THREE.DoubleSide
 	});
 	water = new THREE.Mesh(geometry, material);
